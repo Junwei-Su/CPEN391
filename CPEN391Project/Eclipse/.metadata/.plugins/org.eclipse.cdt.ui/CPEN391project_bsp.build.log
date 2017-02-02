@@ -1,0 +1,6 @@
+23:28:00 **** Clean-only build of configuration Nios II for project CPEN391project_bsp ****
+make clean 
+[BSP clean complete]
+
+23:28:00 Build Finished (took 155ms)
+
