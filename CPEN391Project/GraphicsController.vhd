@@ -849,17 +849,20 @@ end process;
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		elsif(CurrentState = DrawLine) then
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------		
-			-- TODO in your project
-			------------clarence
+			-- TODO in your project----
+			------------clarence-----
+			
+			
+			
+			
 			X_Data <= X1;	-- copy x1 register to the temporary ‘x’ register – i.e. int x = x1;
-			X_Data <= Y1;	-- copy y1 register to the temporary ‘y’ register – i.e. int y = y1;
+			Y_Data <= Y1;	-- copy y1 register to the temporary ‘y’ register – i.e. int y = y1;
 
 			X_Load_H 	<= '1';
 			Y_Load_H 	<= '1';
 			
-			---clarence change assignment operator := into  <=
-			x2Minusx1 <= X2 - X1; 	 -- calculations 
-			y2Minusy1 <= Y2 - Y1;	 -- calculations
+			x2Minusx1 := X2 - X1; 	 -- calculations 
+			y2Minusy1 := Y2 - Y1;	 -- calculations
 			
 			dx_Data <= abs(signed(x2Minusx1));		--  int dx = abs(x2 - x1);
 			dy_Data <= abs(signed(y2Minusy1));		--  int dy = abs(y2 - y1);
@@ -868,6 +871,7 @@ end process;
 			dy_Load_H 	<= '1';
 
 			interchange_Data 	<= X"0000";		-- equivalent of interchange = 0
+			
 			interchange_Load_H <= '1';	
 
 			-- calculate equivalent of C expression s1= sign(x2 - x1)
@@ -895,8 +899,9 @@ end process;
 			------------clarence---------------
 			----changed the provided so that if dx or dy ==0, return
 			if(dx_Data = 0 and dy_Data = 0) then
-			else 
 				NextState <= IDLE;
+			else 
+				NextState <= DrawLine1;
 			end if;
 			
 			----store dx into swap for swapping later-----
@@ -906,6 +911,7 @@ end process;
 			----if dy > dx, swap
 			if(dy_Data>dx_Data) then
 				Swap_Load_H <= '1';
+				interchange_Data = X"0001";
 			else
 				Swap_Load_H <= '0';
 			end if;
@@ -913,12 +919,13 @@ end process;
 		elsif(CurrentState = DrawLine1) then
 		------do the swap-----------dx, dy
 			if(Swap_Load_H = '1') then
-				dy_Data <= SwapX;
-				dx_Data <= SwapY;
+				dy_Data <= SwapX;    --dy = dx
+				dx_Data <= SwapY;	 --dx = dy
 			end if;
 			
+			--there might be timing error here
+			Error_Data <= (dy(14 downto 0) & '0') - dx_Data ; --Error = (dy<<1) -dx
 			Error_Load_H <= '1';
-			Error_Data <= (dy(14 downto 0) & '0') - dx ;
 			
 			For_counter_Data <= X"0001";
 			For_counter_Load_H <= '1';
@@ -931,6 +938,7 @@ end process;
 			if(For_counter <= dx) then
 				------------increment counter-------------
 				For_counter_Data <= For_counter + 1;
+				
 				----------write a pixel---------------
 				Sig_AddressOut 	<= Y(8 downto 0) & X(9 downto 1);				-- 9 bit x address even though it goes up to 1024 which would mean 10 bits, because each address = 2 pixels/bytes
 				Sig_RW_Out			<= '0';													-- we are intending to draw a pixel so set RW to '0' for a write to memory
@@ -943,22 +951,20 @@ end process;
 				end if;
 					
 				nextState <= DrawLine3;
-				
 			else
-				nextState <= IDLE;
+				nextState <= IDLE; --i>dx, finish
 			end if;
 			
 		elsif(CurrentState = DrawLine3) then
 		------------------correct error---------------
 			if(Error >= 0) then
-			
 				if(interchange = 1) then
 					X_Data <= X + S1;
 				else
 					Y_Data <= Y + S2;
 				end if;
 				
-				Error_Data <= Error - (dx(14 downto 0) & '0');
+				Error_Data <= Error - (dx(14 downto 0) & '0');  --Error = Error - dx<<1
 				nextState <= DrawLine3;
 				
 			else
@@ -973,7 +979,8 @@ end process;
 				X_Data <= X + S1;
 			end if;
 			
-			Error_Data <= Error + (dy(14 downto 0) & '0');
+			Error_Data <= Error + (dy(14 downto 0) & '0'); --Error = Error + dy<<1
+			
 			nextState <= DrawLine2;
 			
 			
