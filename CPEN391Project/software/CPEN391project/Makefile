@@ -142,7 +142,8 @@ ACDS_VERSION := 15.0
 ELF := CPEN391project.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS := hello_world.c
+C_SRCS += hello_world.c
+C_SRCS += initialize_RS232.c
 CXX_SRCS :=
 ASM_SRCS :=
 
