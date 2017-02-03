@@ -143,7 +143,8 @@ ELF := CPEN391project.elf
 
 # Paths to C, C++, and assembly source files.
 C_SRCS += hello_world.c
-C_SRCS += initialize_RS232.c
+C_SRCS += WifiModule.c
+C_SRCS += RS232.c
 CXX_SRCS :=
 ASM_SRCS :=
 

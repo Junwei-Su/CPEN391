@@ -16,16 +16,10 @@
 
 #include <stdio.h>
 #include "Colours.h"
-#include <string.h>
+#include "WifiModule.h"
+#include "RS232.h"
 
 //#include "BresenhamsLineDrawingAlgorithm.h"
-
-//initialization message for wifi module to set up Lua file
-char initialize[] = "dofile(\"send_text_message.lua\")";
-
-//message to be sent
-char theMessage[] = "Your person is safe";
-
 
 // #defined constants representing values we write to the graphics 'command' register to get
 // it to do something. You will add more values as you add hardware to the graphics chip
@@ -159,34 +153,12 @@ void Drawline(int x1, int y1, int x2, int y2, int color)
 	GraphicsCommandReg = DrawLine;		// give graphics a "write pixel" command
 }
 
-//functions to send msg
-void putString(char string[]){
-	int i;
-
-	for (i = 0; i < strlen(string); i++){
-	putcharRS232(string[i]);
-	}
-	putcharRS232('\r');
-	putcharRS232('\n');
-}
-
-void message(char string[]){
-	char str[256];
-
-	sprintf(str,"send_sms(\"(778) 653-7744\",\"(604) 783-0303\",\"%s\")",string);
-	putString(str);
-}
-
-
-
 int main()
 {
 	int i ;
 //	printf("Hello from Nios II!\n");
-
-	//initialize wifi module
-	Init_RS232();
-	putString(initialize);
+	rs232_init();
+	wifi_init();
 //
 	//draw a line across the screen in RED at y coord 100 and from x = 0 to 799
 //	for(i = 0; i < 800; i ++)
@@ -204,7 +176,7 @@ int main()
 	printf("Colour value (i.e. pallette number) = %d at [%d, 100]\n", ReadAPixel(20, 20),20);
 
 	//sending sms message to phone
-	message(theMessage);
+	wifi_send_sms(WIFI_MESSAGE_DEPENDENT_IS_SAFE);
 
 	return 0;
 }
