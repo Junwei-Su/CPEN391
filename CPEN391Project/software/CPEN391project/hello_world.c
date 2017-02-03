@@ -155,7 +155,6 @@ void Drawline(int x1, int y1, int x2, int y2, int color)
 
 int main()
 {
-	int i ;
 //	printf("Hello from Nios II!\n");
 	rs232_init();
 	wifi_init();

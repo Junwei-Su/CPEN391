@@ -4,7 +4,6 @@
  *  Created on: Feb 2, 2017
  *      Author: Simon Jinaphant
  */
-#include "WifiModule.h"
 
 /**
  * Initialize the Wifi module.
@@ -12,7 +11,7 @@
  */
 void wifi_init() {
 	// Instruct RS232 chip to initializes the onboard .lua wifi script.
-	putString("dofile(\"send_text_message.lua\")");
+	rs232_send_string("dofile(\"send_text_message.lua\")");
 }
 
 /**
@@ -26,6 +25,6 @@ void wifi_send_sms(char message[]) {
 	sprintf(lua_sms_command,
 			"send_sms(\"(778) 653-7744\",\"(604) 783-0303\",\"%s\")", message);
 
-	putString(lua_sms_command);
+	rs232_send_string(lua_sms_command);
 }
 

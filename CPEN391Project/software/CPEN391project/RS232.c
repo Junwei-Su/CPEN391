@@ -6,15 +6,13 @@
  */
 
 /**************************************************************************
- /* Subroutine to initialize the RS232 Port by writing some data
+ ** Subroutine to initialize the RS232 Port by writing some data
  ** to the internal registers.
  ** Call this function at the start of the program before you attempt
  ** to read or write to data via the RS232 port
  **
  ** Refer to 6850 data sheet for details of registers and
  ***************************************************************************/
-#include "RS232.h"
-
 #define RS232_Control (*(volatile unsigned char *)(0x84000220))
 #define RS232_Status (*(volatile unsigned char *)(0x84000220))
 #define RS232_TxData (*(volatile unsigned char *)(0x84000222))

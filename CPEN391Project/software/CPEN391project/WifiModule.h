@@ -8,9 +8,10 @@
 #ifndef WIFIMODULE_H_
 #define WIFIMODULE_H_
 #include <string.h>
+#include "RS232.h"
 
 // The message to send via SMS when Dependent is safe.
-const char WIFI_MESSAGE_DEPENDENT_IS_SAFE[] =
+char WIFI_MESSAGE_DEPENDENT_IS_SAFE[] =
 		"The dependent has confirm their safety.";
 
 void wifi_init();
