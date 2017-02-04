@@ -979,6 +979,7 @@ end process;
 				X_Data <= X + S1;
 			end if;
 			
+			Error_Data <= Error + (dy(14 downto 0) & '0');
 			Error_Data <= Error + (dy(14 downto 0) & '0'); --Error = Error + dy<<1
 			
 			nextState <= DrawLine2;
