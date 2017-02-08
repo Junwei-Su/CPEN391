@@ -1,0 +1,14 @@
+#include <stdio.h>
+
+int main()
+{
+
+	putString(initialize);
+
+	clearScreen();
+
+	drawBox1(GREEN);
+	drawBox2(BLUE);
+
+	return 0;
+}

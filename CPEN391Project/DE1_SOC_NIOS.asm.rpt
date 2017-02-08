@@ -1,5 +1,5 @@
 Assembler report for DE1_SOC_NIOS
-Thu Feb 02 01:17:00 2017
+Fri Feb 03 23:17:21 2017
 Quartus II 64-Bit Version 15.0.0 Build 145 04/22/2015 SJ Web Edition
 
 
@@ -39,7 +39,7 @@ agreement for further details.
 +---------------------------------------------------------------+
 ; Assembler Summary                                             ;
 +-----------------------+---------------------------------------+
-; Assembler Status      ; Successful - Thu Feb 02 01:17:00 2017 ;
+; Assembler Status      ; Successful - Fri Feb 03 23:17:21 2017 ;
 ; Revision Name         ; DE1_SOC_NIOS                          ;
 ; Top-level Entity Name ; DE1_SOC_NIOS                          ;
 ; Family                ; Cyclone V                             ;
@@ -80,8 +80,8 @@ agreement for further details.
 ; Option         ; Setting                                                                                    ;
 +----------------+--------------------------------------------------------------------------------------------+
 ; Device         ; 5CSEMA5F31C6                                                                               ;
-; JTAG usercode  ; 0x09139A40                                                                                 ;
-; Checksum       ; 0x09139A40                                                                                 ;
+; JTAG usercode  ; 0x0913B0E8                                                                                 ;
+; Checksum       ; 0x0913B0E8                                                                                 ;
 +----------------+--------------------------------------------------------------------------------------------+
 
 
@@ -91,14 +91,14 @@ agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit Assembler
     Info: Version 15.0.0 Build 145 04/22/2015 SJ Web Edition
-    Info: Processing started: Thu Feb 02 01:16:47 2017
+    Info: Processing started: Fri Feb 03 23:17:08 2017
 Info: Command: quartus_asm --read_settings_files=off --write_settings_files=off DE1_SOC_NIOS -c DE1_SOC_NIOS
 Info (115030): Assembler is generating device programming files
 Info (115017): Design contains a time-limited core -- only a single, time-limited programming file can be generated
 Warning (210042): Can't convert time-limited SOF into POF, HEX File, TTF, or RBF
 Info: Quartus II 64-Bit Assembler was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 895 megabytes
-    Info: Processing ended: Thu Feb 02 01:17:00 2017
+    Info: Peak virtual memory: 900 megabytes
+    Info: Processing ended: Fri Feb 03 23:17:21 2017
     Info: Elapsed time: 00:00:13
     Info: Total CPU time (on all processors): 00:00:13
 

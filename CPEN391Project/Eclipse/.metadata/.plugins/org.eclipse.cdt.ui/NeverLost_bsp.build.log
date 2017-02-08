@@ -1,0 +1,6 @@
+21:35:20 **** Clean-only build of configuration Nios II for project NeverLost_bsp ****
+make clean 
+[BSP clean complete]
+
+21:35:20 Build Finished (took 172ms)
+

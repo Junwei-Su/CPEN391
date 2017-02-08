@@ -1,9 +1,14 @@
-08:17:02 **** Incremental Build of configuration Nios II for project CPEN391project ****
+21:24:22 **** Build of configuration Nios II for project CPEN391project ****
 make all 
 Info: Building ../CPEN391project_bsp/
 C:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../CPEN391project_bsp/
 [BSP build complete]
-[CPEN391project build complete]
+Info: Linking CPEN391project.elf
+nios2-elf-g++  -T'../CPEN391project_bsp//linker.x' -msys-crt0='../CPEN391project_bsp//obj/HAL/src/crt0.o' -msys-lib=hal_bsp -L../CPEN391project_bsp/   -Wl,-Map=CPEN391project.map   -O0 -g -Wall   -mhw-div -mhw-mul -mno-hw-mulx  -o CPEN391project.elf  -lm -msys-lib=m
+../CPEN391project_bsp/\libhal_bsp.a(alt_main.o): In function `alt_main':
+C:\Users\Little_town\Desktop\CPEN391\CPEN391Project\software\CPEN391project_bsp/HAL/src/alt_main.c:154: undefined reference to `main'
+collect2.exe: error: ld returned 1 exit status
+make: *** [CPEN391project.elf] Error 1
 
-08:17:03 Build Finished (took 708ms)
+21:24:23 Build Finished (took 622ms)
 

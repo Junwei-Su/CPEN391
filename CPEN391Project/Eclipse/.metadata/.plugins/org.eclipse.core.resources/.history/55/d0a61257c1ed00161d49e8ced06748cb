@@ -1,0 +1,17 @@
+#include <graphic.h>
+
+int main()
+{
+	int i ;
+	printf("Hello from Nios II!\n");
+
+	// draw a line across the screen in RED at y coord 100 and from x = 0 to 799
+	for(i = 0; i < 800; i ++)
+		WriteAPixel(i, 100, RED);
+
+	// read the pixels back and make sure we read 2 (RED) to prove it's working
+	for(i = 0; i < 800; i ++)
+		printf("Colour value (i.e. pallette number) = %d at [%d, 100]\n", ReadAPixel(i, 100), i);
+
+	return 0;
+}

@@ -1,0 +1,9 @@
+21:53:30 **** Incremental Build of configuration Nios II for project NeverLost ****
+make all 
+Info: Building ../NeverLost_bsp/
+C:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../NeverLost_bsp/
+[BSP build complete]
+[NeverLost build complete]
+
+21:53:31 Build Finished (took 573ms)
+

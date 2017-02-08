@@ -139,6 +139,8 @@ architecture bhvr of GraphicsController is
 	constant Drawline2  								: Std_Logic_Vector(7 downto 0) := X"15";		-- State for drawing a pixel in X reg
 	constant Drawline3  								: Std_Logic_Vector(7 downto 0) := X"16";
 	constant Drawline4  								: Std_Logic_Vector(7 downto 0) := X"17";
+	constant Drawline5  								: Std_Logic_Vector(7 downto 0) := X"18";
+	constant Drawline6  								: Std_Logic_Vector(7 downto 0) := X"19";
 	
 	Signal	X	: std_logic_vector(15 downto 0) ;	-- the variable/register 'x‘ 16 bits wide
 	Signal	X_Data 	: std_Logic_Vector(15 downto 0);	-- signal/wire carrying data to be stored in 'x'
@@ -150,8 +152,8 @@ architecture bhvr of GraphicsController is
 	
 	
 	---------------------------for draw line algorithm--------------------------------------------
-	Signal	interchange	: std_logic_vector(15 downto 0) ;	-- the variable/register 'x‘ 16 bits wide
-	Signal	interchange_Data  	: std_Logic_Vector(15 downto 0);	-- signal/wire carrying data to be stored in 'x'
+	Signal	interchange	: std_logic;	-- the variable/register 'x‘ 16 bits wide
+	Signal	interchange_Data  	: std_logic;	-- signal/wire carrying data to be stored in 'x'
 	Signal	interchange_Load_H 	: std_logic;			-- signal/wire to store/update ‘x’
 	
 	Signal	x2Minusx1	: std_logic_vector(15 downto 0) ;
@@ -787,7 +789,7 @@ end process;
 			NextState <= DrawHline1;
 		
 		elsif(CurrentState = DrawHline1)then
-		
+			X_Load_H <= '0';
 			Sig_AddressOut 	<= Y1(8 downto 0) & X(9 downto 1);				-- 9 bit x address even though it goes up to 1024 which would mean 10 bits, because each address = 2 pixels/bytes
 			Sig_RW_Out			<= '0';													-- we are intending to draw a pixel so set RW to '0' for a write to memory
 			----Y is not changing, we use X for x coordinate
@@ -801,7 +803,7 @@ end process;
 			NextState <= DrawHline2;
 			
 		elsif(CurrentState = DrawHline2)then
-			
+			X_Load_H <= '1';
 			if(X < X2) then
 				X_Data <= X + 1;
 				NextState <= DrawHline1;
@@ -823,7 +825,7 @@ end process;
 			NextState <= DrawVline1;
 		
 		elsif(CurrentState = DrawVline1)then
-		
+			Y_Load_H <= '0';
 			Sig_AddressOut 	<= Y(8 downto 0) & X1(9 downto 1);				-- 9 bit x address even though it goes up to 1024 which would mean 10 bits, because each address = 2 pixels/bytes
 			Sig_RW_Out			<= '0';													-- we are intending to draw a pixel so set RW to '0' for a write to memory
 			----X is not changing, we use Y for x coordinate
@@ -837,7 +839,7 @@ end process;
 			NextState <= DrawVline2;
 			
 		elsif(CurrentState = DrawVline2)then
-			
+			Y_Load_H <= '1';
 			if(Y < Y2) then
 				Y_data <= Y + 1;
 				NextState <= DrawVline1;
@@ -852,27 +854,16 @@ end process;
 			-- TODO in your project----
 			------------clarence-----
 			
-			
-			
-			
 			X_Data <= X1;	-- copy x1 register to the temporary ‘x’ register – i.e. int x = x1;
 			Y_Data <= Y1;	-- copy y1 register to the temporary ‘y’ register – i.e. int y = y1;
-
-			X_Load_H 	<= '1';
-			Y_Load_H 	<= '1';
 			
-			x2Minusx1 := X2 - X1; 	 -- calculations 
-			y2Minusy1 := Y2 - Y1;	 -- calculations
+			x2Minusx1 <= X2 - X1; 	 -- calculations 
+			y2Minusy1 <= Y2 - Y1;	 -- calculations
 			
 			dx_Data <= abs(signed(x2Minusx1));		--  int dx = abs(x2 - x1);
 			dy_Data <= abs(signed(y2Minusy1));		--  int dy = abs(y2 - y1);
 
-			dx_Load_H 	<= '1';
-			dy_Load_H 	<= '1';
-
-			interchange_Data 	<= X"0000";		-- equivalent of interchange = 0
-			
-			interchange_Load_H <= '1';	
+			interchange_Data 	<= '0';		-- equivalent of interchange = 0
 
 			-- calculate equivalent of C expression s1= sign(x2 - x1)
 			if(x2Minusx1 < 0) then
@@ -882,8 +873,6 @@ end process;
 			else
 				S1_Data <= X"0001";			-- s1 = 1
 			end if;
-			
-			S1_Load_H 	<= '1';
 
 			-- calculate equivalent of C expression s2= sign(y2 - y1)
 			if(y2Minusy1 < 0) then	
@@ -893,51 +882,113 @@ end process;
 			else
 				S2_Data <= X"0001";	-- s2 = 1
 			end if;	
-				
+			
+			
+			S1_Load_H 	<= '1';
 			S2_Load_H 	<= '1';
+			dx_Load_H 	<= '1';
+			dy_Load_H 	<= '1';
+			X_Load_H 	<= '1';
+			Y_Load_H 	<= '1';
+			interchange_Load_H <= '1';	
+			Error_Load_H <= '0';
+			For_counter_Load_H <= '0';
+			
+			NextState <= DrawLine6;
+			
+		elsif(CurrentState = DrawLine6) then
+			
+			S1_Load_H 	<= '0';
+			S2_Load_H 	<= '0';
+			dx_Load_H 	<= '0';
+			dy_Load_H 	<= '0';
+			X_Load_H 	<= '0';
+			Y_Load_H 	<= '0';
+			interchange_Load_H <= '1';	
+			Error_Load_H <= '0';
+			For_counter_Load_H <= '0';
 			
 			------------clarence---------------
 			----changed the provided so that if dx or dy ==0, return
-			if(dx_Data = 0 and dy_Data = 0) then
+			if(dx = X"0000" and dy = X"0000") then
 				NextState <= IDLE;
 			else 
 				NextState <= DrawLine1;
 			end if;
 			
 			----store dx into swap for swapping later-----
-			SwapX_Data <= dx_Data;
-			SwapY_Data <= dy_Data;
+			SwapX_Data <= dx;
+			SwapY_Data <= dy;
 			
 			----if dy > dx, swap
-			if(dy_Data>dx_Data) then
+			if(dy>dx) then
 				Swap_Load_H <= '1';
-				interchange_Data = X"0001";
+				interchange_Data <= '1';
 			else
 				Swap_Load_H <= '0';
+				interchange_Data <= '0';
 			end if;
+			
+			--load enble list
+			
 			
 		elsif(CurrentState = DrawLine1) then
+			S1_Load_H 	<= '0';
+			S2_Load_H 	<= '0';
+			X_Load_H 	<= '0';
+			Y_Load_H 	<= '0';
+			interchange_Load_H <= '0';	
+			Swap_Load_H <= '0';
+		
 		------do the swap-----------dx, dy
-			if(Swap_Load_H = '1') then
+			if(interchange = '1') then
 				dy_Data <= SwapX;    --dy = dx
 				dx_Data <= SwapY;	 --dx = dy
+				dx_Load_H 	<= '1';
+				dy_Load_H 	<= '1';
+			else
+				dx_Load_H 	<= '0';
+				dy_Load_H 	<= '0';
 			end if;
 			
-			--there might be timing error here
-			Error_Data <= (dy(14 downto 0) & '0') - dx_Data ; --Error = (dy<<1) -dx
-			Error_Load_H <= '1';
+			nextState <= DrawLine2;
 			
-			For_counter_Data <= X"0001";
+		elsif(CurrentState = DrawLine2) then
+			S1_Load_H 	<= '0';
+			S2_Load_H 	<= '0';
+			dx_Load_H 	<= '0';
+			dy_Load_H 	<= '0';
+			X_Load_H 	<= '0';
+			Y_Load_H 	<= '0';
+			interchange_Load_H <= '0';	
+			Swap_Load_H <= '0';
+			Error_Load_H <= '1';
 			For_counter_Load_H <= '1';
 			
-			nextState <= DrawLine2;
+			--there might be timing error here
+			Error_Data <= (dy(14 downto 0) & '0') - dx ; --Error = (dy<<1) -dx
+			
+			For_counter_Data <= X"0001";
+			
+			nextState <= DrawLine3;
 		
-		elsif(CurrentState = DrawLine2) then
+		elsif(CurrentState = DrawLine3) then
+			S1_Load_H 	<= '0';
+			S2_Load_H 	<= '0';
+			dx_Load_H 	<= '0';
+			dy_Load_H 	<= '0';
+			X_Load_H 	<= '0';
+			Y_Load_H 	<= '0';
+			interchange_Load_H <= '0';	
+			Swap_Load_H <= '0';
+			Error_Load_H <= '0';
+		
 			--------step into main loop------------
 			--------if i<= dx---------------
 			if(For_counter <= dx) then
 				------------increment counter-------------
 				For_counter_Data <= For_counter + 1;
+				For_counter_Load_H <= '1';
 				
 				----------write a pixel---------------
 				Sig_AddressOut 	<= Y(8 downto 0) & X(9 downto 1);				-- 9 bit x address even though it goes up to 1024 which would mean 10 bits, because each address = 2 pixels/bytes
@@ -950,39 +1001,75 @@ end process;
 					Sig_LDS_Out_L 	<= '0';													-- else write to lower half of Sram data bus to get the other pixel at that address
 				end if;
 					
-				nextState <= DrawLine3;
+				nextState <= DrawLine4;
 			else
+				S1_Load_H 	<= '0';
+				S2_Load_H 	<= '0';
+				dx_Load_H 	<= '0';
+				dy_Load_H 	<= '0';
+				X_Load_H 	<= '0';
+				Y_Load_H 	<= '0';
+				interchange_Load_H <= '0';	
+				Swap_Load_H <= '0';
+				Error_Load_H <= '0';
+				For_counter_Load_H <= '0';
 				nextState <= IDLE; --i>dx, finish
 			end if;
 			
-		elsif(CurrentState = DrawLine3) then
+		elsif(CurrentState = DrawLine4) then
+				S1_Load_H 	<= '0';
+				S2_Load_H 	<= '0';
+				dx_Load_H 	<= '0';
+				dy_Load_H 	<= '0';
+				interchange_Load_H <= '0';	
+				Swap_Load_H <= '0';
+				For_counter_Load_H <= '0';
 		------------------correct error---------------
 			if(Error >= 0) then
-				if(interchange = 1) then
+				if(interchange = '1') then
 					X_Data <= X + S1;
+					X_Load_H 	<= '1';
+					Y_Load_H 	<= '0';
 				else
 					Y_Data <= Y + S2;
+					Y_Load_H 	<= '1';
+					X_Load_H 	<= '0';
 				end if;
 				
+				Error_Load_H <= '1';
 				Error_Data <= Error - (dx(14 downto 0) & '0');  --Error = Error - dx<<1
-				nextState <= DrawLine3;
+				nextState <= DrawLine4;
 				
 			else
-				nextState <= DrawLine4;
+				Error_Load_H <= '0';
+				Y_Load_H 	<= '0';
+				X_Load_H 	<= '0';
+				nextState <= DrawLine5;
 			end if ;
 			
-		elsif(CurrentState = DrawLine4) then
+		elsif(CurrentState = DrawLine5) then
+				S1_Load_H 	<= '0';
+				S2_Load_H 	<= '0';
+				dx_Load_H 	<= '0';
+				dy_Load_H 	<= '0';
+				interchange_Load_H <= '0';	
+				Swap_Load_H <= '0';
+				Error_Load_H <= '1';
+				For_counter_Load_H <= '0';
 		--------------------interchange branch--------------
-			if(interchange = 1) then
+			if(interchange = '1') then
 				Y_Data <= Y + S2;
+				Y_Load_H 	<= '1';
+				X_Load_H 	<= '0';
 			else
 				X_Data <= X + S1;
+				X_Load_H 	<= '1';
+				Y_Load_H 	<= '0';
 			end if;
 			
-			Error_Data <= Error + (dy(14 downto 0) & '0');
 			Error_Data <= Error + (dy(14 downto 0) & '0'); --Error = Error + dy<<1
 			
-			nextState <= DrawLine2;
+			nextState <= DrawLine3;
 			
 			
 ----------------------------------------------------------------------------------------------------------------

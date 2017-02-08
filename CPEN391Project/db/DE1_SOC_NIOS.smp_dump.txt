@@ -36,15 +36,6 @@ m_next.000001000 0 0 1 1
 m_next.000010000 0 1 0 1 
 m_next.010000000 1 0 0 1 
 
-State Machine - |DE1_SOC_NIOS|NIOS_II_SYSTEM:inst3|nios_system:NiosII|nios_system_nios2_qsys_0:nios2_qsys_0|nios_system_nios2_qsys_0_nios2_oci:the_nios_system_nios2_qsys_0_nios2_oci|nios_system_nios2_qsys_0_jtag_debug_module_wrapper:the_nios_system_nios2_qsys_0_jtag_debug_module_wrapper|nios_system_nios2_qsys_0_jtag_debug_module_tck:the_nios_system_nios2_qsys_0_jtag_debug_module_tck|DRsize
-Name DRsize.101 DRsize.100 DRsize.011 DRsize.010 DRsize.001 DRsize.000 
-DRsize.000 0 0 0 0 0 0 
-DRsize.001 0 0 0 0 1 1 
-DRsize.010 0 0 0 1 0 1 
-DRsize.011 0 0 1 0 0 1 
-DRsize.100 0 1 0 0 0 1 
-DRsize.101 1 0 0 0 0 1 
-
 State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst5|ACIA_6850:inst18|DCDState
 Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
 DCDState.DCD_State_Idle 0 0 0 
@@ -65,6 +56,15 @@ RxState.RxStart_State 0 0 0 0
 RxState.RxData_state 0 0 1 1 
 RxState.RxParity_state 0 1 0 1 
 RxState.RxStop_state 1 0 0 1 
+
+State Machine - |DE1_SOC_NIOS|NIOS_II_SYSTEM:inst3|nios_system:NiosII|nios_system_nios2_qsys_0:nios2_qsys_0|nios_system_nios2_qsys_0_nios2_oci:the_nios_system_nios2_qsys_0_nios2_oci|nios_system_nios2_qsys_0_jtag_debug_module_wrapper:the_nios_system_nios2_qsys_0_jtag_debug_module_wrapper|nios_system_nios2_qsys_0_jtag_debug_module_tck:the_nios_system_nios2_qsys_0_jtag_debug_module_tck|DRsize
+Name DRsize.101 DRsize.100 DRsize.011 DRsize.010 DRsize.001 DRsize.000 
+DRsize.000 0 0 0 0 0 0 
+DRsize.001 0 0 0 0 1 1 
+DRsize.010 0 0 0 1 0 1 
+DRsize.011 0 0 1 0 0 1 
+DRsize.100 0 1 0 0 0 1 
+DRsize.101 1 0 0 0 0 1 
 
 State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst5|ACIA_6850:inst8|DCDState
 Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
