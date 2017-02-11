@@ -155,27 +155,25 @@ void Drawline(int x1, int y1, int x2, int y2, int color)
 
 int main()
 {
-//	printf("Hello from Nios II!\n");
+	printf("Hello from Nios II!\n");
 	rs232_init();
-	wifi_init();
-//
-	//draw a line across the screen in RED at y coord 100 and from x = 0 to 799
-//	for(i = 0; i < 800; i ++)
-//		WriteAPixel(i, 100, RED);
-//
-//	// read the pixels back and make sure we read 2 (RED) to prove it's working
-//	for(i = 0; i < 800; i ++)
-//		printf("Colour value (i.e. pallette number) = %d at [%d, 100]\n", ReadAPixel(i, 100),i);
 
-	DrawHline(20,200,220,200, RED);
-	DrawHline(20,220,220,220, GREEN);
-	DrawVline(20,200,20,400, GREEN);
-	Drawline(20,20,220,40, GREEN);
-	printf("Colour value (i.e. pallette number) = %d at [%d, 100]\n", ReadAPixel(100, 20),20);
-	printf("Colour value (i.e. pallette number) = %d at [%d, 100]\n", ReadAPixel(20, 20),20);
+	printf("Sent CMD mode request\n");
+	rs232_send_char('$');
+	rs232_send_char('$');
+	rs232_send_char('$');
+	rs232_print_response();
 
-	//sending sms message to phone
-	wifi_send_sms(WIFI_MESSAGE_DEPENDENT_IS_SAFE);
+	printf("Sending SN:\n");
+	rs232_send_string("SN,GROUP-8-DEVICE");
+	rs232_print_response();
+
+	printf("Sending SP:\n");
+	rs232_send_string("SP,3918");
+	rs232_print_response();
+
+	rs232_send_string("---");
+	printf("Done\n");
 
 	return 0;
 }

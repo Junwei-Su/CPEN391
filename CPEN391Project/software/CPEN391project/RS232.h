@@ -12,6 +12,7 @@
 void rs232_init(void);
 void rs232_send_string(char command[]);
 int rs232_send_char(int char_data);
+void rs232_print_response();
 int rs232_get_char(void);
 int rs232_check_if_received_data(void);
 

@@ -71,6 +71,15 @@ int rs232_send_char(int char_data) {
 	return char_data;
 }
 
+void rs232_print_response(){
+	char response;
+	while(response != '\n'){
+		response = (char)rs232_get_char();
+		printf("%c", response);
+	}
+	printf("\n");
+}
+
 /**
  * Receive a single char from the RS232 chip.
  */
