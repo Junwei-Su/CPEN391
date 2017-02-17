@@ -1,0 +1,180 @@
+22:23:19 **** Incremental Build of configuration Nios II for project NeverLost ****
+make all 
+Info: Building ../NeverLost_bsp/
+C:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../NeverLost_bsp/
+[BSP build complete]
+Info: Compiling NeverLostMain.c to obj/default/NeverLostMain.o
+nios2-elf-gcc -xc -MP -MMD -c -I../NeverLost_bsp//HAL/inc -I../NeverLost_bsp/ -I../NeverLost_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -DALT_SINGLE_THREADED    -O0 -g -Wall   -mhw-div -mhw-mul -mno-hw-mulx  -o obj/default/NeverLostMain.o NeverLostMain.c
+In file included from graphic.h:4:0,
+                 from NeverLostMain.c:19:
+OutGraphicsCharFont1.h: In function 'OutGraphicsCharFont1':
+OutGraphicsCharFont1.h:51:6: warning: implicit declaration of function 'WriteAPixel' [-Wimplicit-function-declaration]
+      WriteAPixel(theX+column, theY+row, theColour) ;
+      ^
+In file included from graphic.h:5:0,
+                 from NeverLostMain.c:19:
+OutGraphicsCharFont2.h: In function 'OutGraphicsCharFont2a':
+OutGraphicsCharFont2.h:30:6: warning: unused variable 'j' [-Wunused-variable]
+      j,
+      ^
+In file included from graphic.h:6:0,
+                 from NeverLostMain.c:19:
+touchScreen.h: In function 'initTouchScreen':
+touchScreen.h:43:8: warning: unused variable 'c' [-Wunused-variable]
+   char c = getCharRS232Touch();
+        ^
+touchScreen.h: In function 'waitForTouch':
+touchScreen.h:49:2: warning: implicit declaration of function 'screenTouched' [-Wimplicit-function-declaration]
+  while(!screenTouched());
+  ^
+touchScreen.h: In function 'waitForRelease':
+touchScreen.h:54:6: warning: implicit declaration of function 'screenReleased' [-Wimplicit-function-declaration]
+      while(!screenReleased());
+      ^
+In file included from NeverLostMain.c:19:0:
+graphic.h: At top level:
+graphic.h:58:6: warning: conflicting types for 'WriteAPixel'
+ void WriteAPixel (int x, int y, int Colour)
+      ^
+In file included from graphic.h:4:0,
+                 from NeverLostMain.c:19:
+OutGraphicsCharFont1.h:51:6: note: previous implicit declaration of 'WriteAPixel' was here
+      WriteAPixel(theX+column, theY+row, theColour) ;
+      ^
+In file included from NeverLostMain.c:19:0:
+graphic.h: In function 'DrawVlineWeighted':
+graphic.h:122:3: warning: implicit declaration of function 'DrawVline' [-Wimplicit-function-declaration]
+   DrawVline(x, y1, x, y2, color);
+   ^
+graphic.h: At top level:
+graphic.h:126:6: warning: conflicting types for 'DrawVline'
+ void DrawVline(int x1, int y1, int x2, int y2, int color)
+      ^
+graphic.h:122:3: note: previous implicit declaration of 'DrawVline' was here
+   DrawVline(x, y1, x, y2, color);
+   ^
+In file included from NeverLostMain.c:20:0:
+prompt.h: In function 'prompt':
+prompt.h:10:3: warning: implicit declaration of function 'keyPad' [-Wimplicit-function-declaration]
+   keyPad(400,100*i-50);
+   ^
+prompt.h: At top level:
+prompt.h:43:6: warning: conflicting types for 'keyPad'
+ void keyPad(int x1, int y1){
+      ^
+prompt.h:10:3: note: previous implicit declaration of 'keyPad' was here
+   keyPad(400,100*i-50);
+   ^
+In file included from Bio_plot.h:5:0,
+                 from NeverLostMain.c:21:
+GPS_plot.h: In function 'gps':
+GPS_plot.h:55:2: warning: implicit declaration of function 'draw_radar' [-Wimplicit-function-declaration]
+  draw_radar(525, 270, 200);
+  ^
+GPS_plot.h:60:2: warning: implicit declaration of function 'drawLocation' [-Wimplicit-function-declaration]
+  drawLocation(525, 270);
+  ^
+GPS_plot.h: At top level:
+GPS_plot.h:102:6: warning: conflicting types for 'draw_radar'
+ void draw_radar(int cx, int cy, int radius){
+      ^
+GPS_plot.h:55:2: note: previous implicit declaration of 'draw_radar' was here
+  draw_radar(525, 270, 200);
+  ^
+GPS_plot.h: In function 'draw_radar':
+GPS_plot.h:126:2: warning: implicit declaration of function 'scan_line' [-Wimplicit-function-declaration]
+  scan_line(cx,cy,radius);
+  ^
+GPS_plot.h: At top level:
+GPS_plot.h:130:6: warning: conflicting types for 'scan_line'
+ void scan_line(int cx, int cy,int radius){
+      ^
+GPS_plot.h:126:2: note: previous implicit declaration of 'scan_line' was here
+  scan_line(cx,cy,radius);
+  ^
+GPS_plot.h: In function 'scan_line':
+GPS_plot.h:131:9: warning: unused variable 'period' [-Wunused-variable]
+  double period = 2* 3.142;
+         ^
+GPS_plot.h: At top level:
+GPS_plot.h:170:6: warning: conflicting types for 'drawLocation'
+ void drawLocation(int cx, int cy){
+      ^
+GPS_plot.h:60:2: note: previous implicit declaration of 'drawLocation' was here
+  drawLocation(525, 270);
+  ^
+In file included from Bio_plot.h:6:0,
+                 from NeverLostMain.c:21:
+healthSensor.h: In function 'getHRData':
+healthSensor.h:44:9: warning: implicit declaration of function 'getHR' [-Wimplicit-function-declaration]
+         i = getHR();
+         ^
+In file included from NeverLostMain.c:21:0:
+Bio_plot.h: In function 'graph_hr':
+Bio_plot.h:31:2: warning: implicit declaration of function 'drawLabel' [-Wimplicit-function-declaration]
+  drawLabel();
+  ^
+Bio_plot.h:40:3: warning: implicit declaration of function 'hr_calx' [-Wimplicit-function-declaration]
+   Drawline(hr_calx(i+1),HR_plotdata[i+1],hr_calx(i),HR_plotdata[i], RED);
+   ^
+Bio_plot.h: In function 'init_hr':
+Bio_plot.h:77:2: warning: implicit declaration of function 'computeAve' [-Wimplicit-function-declaration]
+  computeAve();
+  ^
+Bio_plot.h:78:2: warning: implicit declaration of function 'computeSD' [-Wimplicit-function-declaration]
+  computeSD();
+  ^
+Bio_plot.h:79:2: warning: implicit declaration of function 'update_HistAVE' [-Wimplicit-function-declaration]
+  update_HistAVE();
+  ^
+Bio_plot.h:82:3: warning: implicit declaration of function 'alert' [-Wimplicit-function-declaration]
+   alert();
+   ^
+Bio_plot.h: At top level:
+Bio_plot.h:87:6: warning: conflicting types for 'drawLabel'
+ void drawLabel(){
+      ^
+Bio_plot.h:31:2: note: previous implicit declaration of 'drawLabel' was here
+  drawLabel();
+  ^
+Bio_plot.h:101:6: warning: conflicting types for 'computeAve'
+ void computeAve(){
+      ^
+Bio_plot.h:77:2: note: previous implicit declaration of 'computeAve' was here
+  computeAve();
+  ^
+Bio_plot.h:111:6: warning: conflicting types for 'computeSD'
+ void computeSD(){
+      ^
+Bio_plot.h:78:2: note: previous implicit declaration of 'computeSD' was here
+  computeSD();
+  ^
+Bio_plot.h:121:6: warning: conflicting types for 'alert'
+ void alert(){
+      ^
+Bio_plot.h:82:3: note: previous implicit declaration of 'alert' was here
+   alert();
+   ^
+Bio_plot.h:125:6: warning: conflicting types for 'update_HistAVE'
+ void update_HistAVE(){
+      ^
+Bio_plot.h:79:2: note: previous implicit declaration of 'update_HistAVE' was here
+  update_HistAVE();
+  ^
+In file included from Bio_plot.h:6:0,
+                 from NeverLostMain.c:21:
+healthSensor.h: In function 'getHRData':
+healthSensor.h:48:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+Info: Linking NeverLost.elf
+nios2-elf-g++  -T'../NeverLost_bsp//linker.x' -msys-crt0='../NeverLost_bsp//obj/HAL/src/crt0.o' -msys-lib=hal_bsp -L../NeverLost_bsp/   -Wl,-Map=NeverLost.map   -O0 -g -Wall   -mhw-div -mhw-mul -mno-hw-mulx  -o NeverLost.elf obj/default/NeverLostMain.o obj/default/RS232.o obj/default/wifi.o -lm -msys-lib=m
+nios2-elf-insert NeverLost.elf --thread_model hal --cpu_name nios2_qsys_0 --qsys true --simulation_enabled false --stderr_dev jtag_uart_0 --stdin_dev jtag_uart_0 --stdout_dev jtag_uart_0 --sopc_system_name nios_system --quartus_project_dir "C:/Users/aaron/Documents/ubc/cpen391/neverLost/CPEN391/CPEN391Project" --jdi C:/Users/aaron/Documents/ubc/cpen391/neverLost/CPEN391/CPEN391Project/software/NeverLost_bsp/../../DE1_SOC_NIOS.jdi --sopcinfo C:/Users/aaron/Documents/ubc/cpen391/neverLost/CPEN391/CPEN391Project/software/NeverLost_bsp/../../nios_system.sopcinfo
+Info: (NeverLost.elf) 180 KBytes program size (code + initialized data).
+Info:                 65349 KBytes free for stack + heap.
+Info: Creating NeverLost.objdump
+nios2-elf-objdump --disassemble --syms --all-header --source NeverLost.elf >NeverLost.objdump
+[NeverLost build complete]
+
+22:23:22 Build Finished (took 2s.706ms)
+

@@ -1,0 +1,382 @@
+/*
+ * This example prints 'Hello from Nios II' to the STDOUT stream. It runs on
+ * the Nios II 'standard', 'full_featured', 'fast', and 'low_cost' example
+ * designs. It runs with or without the MicroC/OS-II RTOS and requires a STDOUT
+ * device in your system's hardware.
+ * The memory footprint of this hosted application is ~69 kbytes by default
+ * using the standard reference design.
+ *
+ * For a reduced footprint version of this template, and an explanation of how
+ * to reduce the memory footprint for a given application, see the
+ * "small_hello_world" template.
+ *
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "Colours.h"
+#include "graphic.h"
+
+
+
+//menu constants
+#define BOXW 150;
+#define BOXH 150;
+
+void menuBox(int x1, int y1) {
+
+	int boxW = BOXW;
+	int boxH = BOXH;
+
+	DrawSolidRectangle(x1, y1, x1+boxW, y1, x1, y1+boxH, x1+boxW, y1+boxH, GRAY);
+	DrawRectangle(x1, y1, x1+boxW, y1, x1, y1+boxH, x1+boxW, y1+boxH, LIGHT_SLATE_GRAY);
+
+}
+
+
+void symbolGPS(int xCentre, int yCentre, int rad){
+
+	int colour = STEEL_BLUE;
+
+	drawcircle(xCentre, yCentre, rad, colour);
+	drawSolidcircle(xCentre, yCentre, rad/2, colour);
+
+	DrawVline(xCentre, yCentre + rad - 10, xCentre, yCentre + rad + 10, colour);
+	DrawVline(xCentre, yCentre - rad - 10, xCentre, yCentre - rad + 10, colour);
+	DrawHline(xCentre + rad - 10, yCentre, xCentre + rad + 10, yCentre, colour);
+	DrawHline(xCentre - rad - 10, yCentre, xCentre - rad + 10, yCentre, colour);
+
+
+}
+
+void symbolHELP(int x1, int y1) {
+
+	int size = 75;
+
+	int i;
+	for(i = 0; i<7; i++){
+	DrawVline(x1+i, y1, x1, y1+size, RED);
+	DrawVline(x1-i, y1, x1, y1+size, RED);
+	}
+
+	drawSolidcircle(x1, y1+size+20, 7, RED);
+
+}
+
+void cross(int xc, int yc) {
+
+	int size = 100;
+
+
+	int xLeft = xc - 50;
+	int yTop = yc - 50;
+
+	int i;
+	for(i = 0; i<15; i++){
+		DrawVline(xc+i, yTop, xc+i, yTop+size, LIME);
+		DrawVline(xc-i, yTop, xc-i, yTop+size, LIME);
+	}
+
+	yc -= 17;
+
+	for(i = 0; i<30; i++){
+		DrawHline(xLeft, yc+i, xLeft+size, yc+i, LIME);
+		DrawHline(xLeft, yc-1, xLeft+size, yc-i, LIME);
+	}
+}
+
+
+void menu(){
+
+	clearScreen(LIGHT_CYAN);
+
+	write(325, 50, "NeverLost", 16, SLATE_GRAY, LIGHT_CYAN);
+
+	DrawSolidRectangle(0, 120, 800, 120, 0, 440, 800, 440, MEDIUM_SPRING_GREEN);
+	DrawRectangle(0, 120, 800, 120, 0, 440, 800, 440, BLUE);
+
+
+	menuBox(100,205);
+	writeSmall(135,375,"DANGER",16, SLATE_GRAY, MEDIUM_SPRING_GREEN);
+	symbolHELP(175, 230);
+	menuBox(325,205);
+	writeSmall(385,375,"GPS",16, SLATE_GRAY, MEDIUM_SPRING_GREEN);
+	symbolGPS(400,280,50);
+	menuBox(550,205);
+	writeSmall(585,375,"HEALTH",16, SLATE_GRAY, MEDIUM_SPRING_GREEN);
+	cross(625, 280);
+}
+
+
+void prompt(){
+
+	clearScreen(LIGHT_CYAN);
+	int i;
+	for (i = 1; i < 5; i++){
+		keyPad(400,100*i-50);
+		keyPad(500,100*i-50);
+		keyPad(600,100*i-50);
+
+	}
+
+	write(450, 100, "1", 16, WHITE, GRAY);
+	write(550, 100, "2", 16, WHITE, GRAY);
+	write(650, 100, "3", 16, WHITE, GRAY);
+
+	write(450, 200, "4", 16, WHITE, GRAY);
+	write(550, 200, "5", 16, WHITE, GRAY);
+	write(650, 200, "6", 16, WHITE, GRAY);
+
+	write(450, 300, "7", 16, WHITE, GRAY);
+	write(550, 300, "8", 16, WHITE, GRAY);
+	write(650, 300, "9", 16, WHITE, GRAY);
+
+	write(440, 400, "OK", 16, GREEN, GRAY);
+	write(550, 400, "0", 16, WHITE, GRAY);
+	write(640, 400, "<-", 16, RED, GRAY);
+
+	int x1 = 50;
+	int y1 = 150;
+	int boxW = 300;
+	int boxH = 50;
+
+	DrawSolidRectangle(x1, y1, x1+boxW, y1, x1, y1+boxH, x1+boxW, y1+boxH, WHITE);
+
+	write(50, 10, "Are you Safe?", 16, GRAY, LIGHT_CYAN);
+	write(50, 30, "Please enter your pin if you are!", 16, GRAY, LIGHT_CYAN);
+}
+
+void keyPad(int x1, int y1){
+
+	int boxW = 100;
+	int boxH = 100;
+
+	DrawSolidRectangle(x1, y1, x1+boxW, y1, x1, y1+boxH, x1+boxW, y1+boxH, GRAY);
+	DrawRectangle(x1, y1, x1+boxW, y1, x1, y1+boxH, x1+boxW, y1+boxH, LIGHT_SLATE_GRAY);
+
+}
+
+void space(int x1, int y1) {
+
+	int boxW = 10;
+	int boxH = 20;
+
+	DrawSolidRectangle(x1, y1, x1+boxW, y1, x1, y1+boxH, x1+boxW, y1+boxH, WHITE);
+
+}
+
+void space2(int x1, int y1) {
+
+	int boxW = 70;
+	int boxH = 30;
+
+	DrawSolidRectangle(x1, y1, x1+boxW, y1, x1, y1+boxH, x1+boxW, y1+boxH, LIGHT_CYAN);
+
+}
+
+void append(char*s, char c) {
+     int len = strlen(s);
+     s[len] = c;
+     s[len+1] = '\0';
+}
+
+char* concat(const char *s1, const char *s2)
+{
+    char *result = malloc(strlen(s1)+strlen(s2)+1);//+1 for the zero-terminator
+    //in real code you would check for errors in malloc here
+    strcpy(result, s1);
+    strcat(result, s2);
+    return result;
+}
+
+void exitB(){
+
+	drawSolidcircle(760, 20, 20, RED);
+	write(755, 13, "X", 16, BLACK, RED);
+}
+
+
+
+int main()
+{
+	initRS232Touch();
+	initTouchScreen();
+
+	clearScreen(LIGHT_CYAN);
+
+
+	menu:
+
+
+
+	menu();
+	exitB();
+	while(1){
+
+		Point p = getPressTime(100);
+		if(touchBox(p,100,790,0)){
+			goto prompt;
+		}
+		if (touchBox(p, 150, 100, 205)){
+			goto prompt;
+		}
+		if (touchBox(p, 150, 325, 205)){
+			goto gps;
+		}
+		if (touchBox(p, 150, 550, 205)){
+			goto health;
+		}
+	}
+
+	prompt:
+
+	prompt();
+	int Spass = 8523;
+	int Dpass = 0000;
+	char *pin = "";
+	int spacer=1;
+	int numLine = 170;
+
+	while(1){
+		Point p = getPressTime(100);
+		if(spacer < 10){
+			if (touchBox(p, 100, 400, 50)){
+				write(50+10*spacer, numLine, "1", 16, GRAY, WHITE);
+				spacer++;
+				pin = concat(pin,"1");
+				waitFor(1);
+
+			}
+			if (touchBox(p, 100, 500, 50)){
+				write(50+10*spacer, numLine, "2", 16, GRAY, WHITE);
+				spacer++;
+				pin = concat(pin,"2");
+				waitFor(1);
+			}
+			if (touchBox(p, 100, 600, 50)){
+				write(50+10*spacer, numLine, "3", 16, GRAY, WHITE);
+				spacer++;
+				pin = concat(pin,"3");
+				waitFor(1);
+			}
+			if (touchBox(p, 100, 400, 150)){
+				write(50+10*spacer, numLine, "4", 16, GRAY, WHITE);
+				spacer++;
+				pin = concat(pin,"4");
+				waitFor(1);
+			}
+			if (touchBox(p, 100, 500, 150)){
+				write(50+10*spacer, numLine, "5", 16, GRAY, WHITE);
+				spacer++;
+				pin = concat(pin,"5");
+				waitFor(1);
+			}
+			if (touchBox(p, 100, 600, 150)){
+				write(50+10*spacer, numLine, "6", 16, GRAY, WHITE);
+				spacer++;
+				pin = concat(pin,"6");
+				waitFor(1);
+			}
+			if (touchBox(p, 100, 400, 250)){
+				write(50+10*spacer, numLine, "7", 16, GRAY, WHITE);
+				spacer++;
+				pin = concat(pin,"7");
+				waitFor(1);
+			}
+			if (touchBox(p, 100, 500, 250)){
+				write(50+10*spacer, numLine, "8", 16, GRAY, WHITE);
+				spacer++;
+				pin = concat(pin,"8");
+				waitFor(1);
+			}
+			if (touchBox(p, 100, 600, 250)){
+				write(50+10*spacer, numLine, "9", 16, GRAY, WHITE);
+				spacer++;
+				pin = concat(pin,"9");
+				waitFor(1);
+			}
+			if (touchBox(p, 100, 500, 350)){
+				write(50+10*spacer, numLine, "0", 16, GRAY, WHITE);
+				spacer++;
+				pin = concat(pin,"0");
+				waitFor(1);
+			}
+		}
+		//backspace
+		if (touchBox(p, 100, 600, 350)){
+			if(spacer > 1){
+				spacer--;
+				space(50+10*spacer, numLine);
+				pin[strlen(pin)-1] = 0;
+			}
+			waitFor(1);
+		}
+
+		//ok
+		if (touchBox(p, 100, 400, 350)){
+			int ipin = atoi(pin);
+			if (ipin == Spass){
+				space2(150, 250);
+				write(50, 250, "CORRECT", 16, GRAY, LIGHT_CYAN);
+				waitFor(2);
+				goto menu;
+			}
+			else if (ipin == Dpass){
+				write(50, 250, "Help is on the way!", 16, GRAY, LIGHT_CYAN);
+				message("Your dependent needs your help!");
+			}
+			else{
+				write(50, 250, "INCORRECT", 16, GRAY, LIGHT_CYAN);
+			}
+			waitFor(1);
+		}
+
+	}
+
+	gps:
+	clearScreen(LIGHT_CYAN);
+	while(1){
+
+		Point p = getPressTime(100);
+		if(touchBox(p,100,790,0)){
+			goto menu;
+		}
+	}
+
+	health:
+	clearScreen(LIGHT_CYAN);
+	while(1){
+		Point p = getPressTime(100);
+		if(touchBox(p,100,790,0)){
+			goto menu;
+		}
+
+	}
+
+
+
+
+/*
+ 	//MAIN MENU SCREEN
+	write(325, y_offset, "NeverLost", 16, SLATE_GRAY, LIGHT_CYAN);
+
+	DrawSolidRectangle(0, 120, 800, 120, 0, 440, 800, 440, MEDIUM_SPRING_GREEN);
+	DrawRectangle(0, 120, 800, 120, 0, 440, 800, 440, BLUE);
+
+
+	menuBox(100,205);
+	writeSmall(135,375,"DANGER",16, SLATE_GRAY, MEDIUM_SPRING_GREEN);
+	symbolHELP(175, 230);
+	menuBox(325,205);
+	writeSmall(385,375,"GPS",16, SLATE_GRAY, MEDIUM_SPRING_GREEN);
+	symbolGPS(400,280,50);
+	menuBox(550,205);
+	writeSmall(585,375,"HEALTH",16, SLATE_GRAY, MEDIUM_SPRING_GREEN);
+	cross(625, 280);
+
+
+*/
+
+	return 0;
+}

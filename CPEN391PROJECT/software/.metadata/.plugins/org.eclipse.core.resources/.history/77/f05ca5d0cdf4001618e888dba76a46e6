@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <math.h>
+#include "graphic.h"
+
+#define PI 3.14159265
+#define LINEWEIGHT 5
+
+static int scan_angle=0;
+
+void draw_radar(int cx, int cy, int radius){
+
+	//draw the circle
+	int i=0;
+	int circle_radius = radius;
+	int increment = floor(circle_radius/3);
+
+	for(;i<3; i++){
+		drawcircle(cx,cy,circle_radius,GREEN);
+		circle_radius=circle_radius - increment;
+	}
+
+	//draw radial line
+	i=0;
+	int x_diff = radius * cos(PI/4);
+	int y_diff = radius * sin(PI/4);
+	DrawHline(cx-radius,cy, cx+radius, cy, GREEN);
+	DrawVline(cx,cy-radius, cx, cy+radius, GREEN);
+	Drawline(cx+x_diff,cy+y_diff,cx-x_diff,cy-y_diff, GREEN);
+	Drawline(cx-x_diff,cy+y_diff,cx+x_diff,cy-y_diff, GREEN);
+
+	//draw red dot center
+	drawSolidcircle(cx,cy,10,RED);
+
+}
+
+void scan_line(int cx, int cy,int radius){
+	double period = 2* 3.142;
+	if(scan_angle>=period){
+		scan_angle=0;
+	}else{
+		scan_angle+=PI/8;
+	}
+
+	int x_diff = radius * cos(scan_angle);
+	int y_diff = radius * sin(scan_angle);
+	Drawline(cx,cy,cx+x_diff,cy+y_diff, RED);
+}
